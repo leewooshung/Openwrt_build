@@ -27,7 +27,7 @@ env:
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 */18 * * *
+    - cron: 0 */1 * * *
 
 jobs:
   check:
@@ -38,21 +38,21 @@ jobs:
     - name: Get Commit Hash
       id: getHash
       run: |
+      
         git clone --depth 1 $REPO_URL_Lede -b $REPO_BRANCH_Lede $REPO_PATH_Lede
         cd $REPO_PATH_Lede
-        echo "commitHash_Lede=$(git rev-parse HEAD)" >> $GITHUB_WORKSPACE/output.txt
+        echo "commitHash_Lede=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         cd
 
         git clone --depth 1 $REPO_URL_HelloWorld -b $REPO_BRANCH_HelloWorld $REPO_PATH_HelloWorld 
         cd $REPO_PATH_HelloWorld
-        echo "commitHash_HelloWorld=$(git rev-parse HEAD)" >> $GITHUB_WORKSPACE/output.txt
+        echo "commitHash_HelloWorld=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         cd
 
         git clone --depth 1 $REPO_URL_PassWall -b $REPO_BRANCH_PassWall $REPO_PATH_PassWall
         cd $REPO_PATH_PassWall
-        echo "commitHash_PassWall=$(git rev-parse HEAD)" >> $GITHUB_WORKSPACE/output.txt
+        echo "commitHash_PassWall=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         cd
-
     - name: Show Commit Head and Combination Heads
       id: combHeader
       run: |
