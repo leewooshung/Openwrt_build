@@ -95,19 +95,7 @@ jobs:
        #清空缓存
        clean:  'false'  # 'false' 默认值
        prefix: ${{ github.workspace }}/openwrt   
-    
-    - name: luci-app-openclash install
-      run: |
-        cd openwrt
-        mkdir package/luci-app-openclash
-        cd package/luci-app-openclash
-        git init
-        git remote add -f origin https://github.com/vernesong/OpenClash.git
-        git config core.sparsecheckout true
-        echo "luci-app-openclash" >> .git/info/sparse-checkout
-        git pull --depth 1 origin master
-        git branch --set-upstream-to=origin/master 
-    
+            
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -116,7 +104,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
         
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: cd openwrt && sed -i '$a src-git kiddin9 https://github.com/kiddin9/openwrt-packages' feeds.conf.default && ./scripts/feeds update -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
